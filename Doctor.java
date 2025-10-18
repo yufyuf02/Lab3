@@ -11,7 +11,7 @@ public class Doctor extends Medico {
     String especializacion, int capPacientesDia, double tarifaConsulta, int numConsultas) {
         super(ID, nombre, departamento, aniosExp, salario);         // El constructor permite que exista la subclase, el super llama a la clase base.
         this.especializacion = especializacion;
-        this.capacidadPacientesDia = capPacientesDia;
+        this.capPacientesDia = capPacientesDia;
         this.tarifaConsulta = tarifaConsulta;
         this.numConsultas = 0;  // Inicia en 0
     }
@@ -34,6 +34,6 @@ public class Doctor extends Medico {
     
     // Para registrar consultas
     public void registrarConsulta() {
-        numeroConsultas++;
+        numConsultas++;
     }
 }

@@ -15,7 +15,7 @@ public class Cita {
 
     // Constructor
     public Cita (int ID, String paciente, Medico medico,
-    LocalDate fecha, LocalTime hora, TipoCita tipo, EstadoCita estado) {
+    LocalDate fecha, LocalTime hora, TipoCita tipo) {
         this.ID = ID;
         this.paciente = paciente;
         this.medico = medico;
@@ -52,12 +52,12 @@ public class Cita {
     
     // Información de la cita
     public String getInfo() {
-        return "Cita #" + ID + 
-               "Paciente: " + paciente + 
-               "Médico: " + medico.getNombre() + 
-               "Fecha: " + fecha + 
-               "Hora: " + hora +
-               "Tipo: " + tipo + 
+        return "Cita #" + ID + " | " +
+               "Paciente: " + paciente + " | " +
+               "Médico: " + medico.getNombre() + " | " +
+               "Fecha: " + fecha +  " | " +
+               "Hora: " + hora + " | " +
+               "Tipo: " + tipo +  " | " +
                "Estado: " + estado;
     }
 

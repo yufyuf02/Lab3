@@ -82,12 +82,14 @@ public class Main {
     }
     
     private static void mostrarMenuPrincipal() {
-        System.out.println("(1) Gestión de Personal Médico");
-        System.out.println("(2) Gestión de Citas");
-        System.out.println("(3) Reagendamiento");
-        System.out.println("(4) Cálculos y Reportes Financieros");
-        System.out.println("(5) Reportes y Análisis");
-        System.out.println("(0) Salir del sistema");
+        System.out.println(
+            "\n" +
+            "(1) Gestión de Personal Médico \n" +
+            "(2) Gestión de Citas \n" +
+            "(3) Reagendamiento \n" +
+            "(4) Cálculos y Reportes Financieros \n" +
+            "(5) Reportes y Análisis \n" +
+            "(0) Salir del sistema");
     }
     
     private static int leerEntero(String mensaje) {
@@ -118,7 +120,7 @@ public class Main {
     }
 
     private static void pausa() {
-        System.out.print("\nPresione ENTER para continuar...");
+        System.out.print("\nPresione ENTER para continuar... ");
         scanner.nextLine();
     }
 
@@ -127,13 +129,14 @@ public class Main {
     private static void menuGestionMedicos() {
         boolean volver = false;
         while (!volver) {
-            System.out.println("\n*** Gestión de Personal Médico ***");
-            System.out.println("(1) Registrar un nuevo médico");
-            System.out.println("(2) Listar todos los médicos");
-            System.out.println("(3) Buscar médico por ID");
-            System.out.println("(4) Buscar médicos por departamento");
-            System.out.println("(5) Eliminar médico");
-            System.out.println("(0) Volver al menú principal");
+            System.out.println(
+                "\n*** Gestión de Personal Médico ***\n" +
+                "(1) Registrar un nuevo médico\n" +
+                "(2) Listar todos los médicos\n" +
+                "(3) Buscar médico por ID\n" +
+                "(4) Buscar médicos por departamento\n" +
+                "(5) Eliminar médico\n" +
+                "(0) Volver al menú principal");
             int opcion = leerEntero("Seleccione una opción: ");
             
             switch (opcion) {
@@ -164,24 +167,49 @@ public class Main {
     private static void registrarNuevoMedico() {
         System.out.println("\n*** REGISTRAR UN NUEVO MÉDICO ***");
         
-        int id = leerEntero("ID: ");
-        
-        // Verificar si el ID ya existe
-        if (admin.buscarMedicoPorID(id) != null) {
-            System.out.println("Ya existe un médico con ese ID.");
-            return;
-        }
+        // Asigna el ID automáticamente
+        int id = admin.getSiguienteIDMedico();
+        System.out.println("ID asignado: " + id);
         
         String nombre = leerTexto("Nombre completo: ");
-        String departamento = leerTexto("Departamento: ");
+        
+        // Seleccionar departamento
+        System.out.println("\nDepartamentos disponibles:");
+        System.out.println(
+            "(1) Medicina General\n" +
+            "(2) Cirugía\n" +
+            "(3) Enfermería\n" +
+            "(4) Radiología\n" +
+            "(5) Cardiología\n" +
+            "(6) Pediatría\n" +
+            "(7) Emergencias\n" +
+            "(8) Neurología");
+        int opcionDepto = leerEntero("Seleccione departamento: ");
+        
+        String departamento = "";
+        switch (opcionDepto) {
+            case 1: departamento = "Medicina General"; break;
+            case 2: departamento = "Cirugía"; break;
+            case 3: departamento = "Enfermería"; break;
+            case 4: departamento = "Radiología"; break;
+            case 5: departamento = "Cardiología"; break;
+            case 6: departamento = "Pediatría"; break;
+            case 7: departamento = "Emergencias"; break;
+            case 8: departamento = "Neurología"; break;
+            default:
+                System.out.println("Departamento inválido.");
+                return;
+        }
+
         int aniosExp = leerEntero("Años de experiencia: ");
         double salarioBase = leerDouble("Salario base: Q");
         
-        System.out.println("\nTipos de especialización:");
-        System.out.println("(1) Doctor General");
-        System.out.println("(2) Cirujano");
-        System.out.println("(3) Enfermero/a");
-        System.out.println("(4) Radiólogo/a");
+        System.out.println(
+            "\nTipos de especialización:\n" +
+            "(1) Doctor General\n" +
+            "(2) Cirujano\n" +
+            "(3) Enfermero/a\n" +
+            "(4) Radiólogo/a\n");
         int tipo = leerEntero("Seleccione: ");
         
         Medico nuevoMedico = null;
@@ -224,6 +252,7 @@ public class Main {
         }
         
         admin.registrarMedico(nuevoMedico);
+        admin.incrementarIDMedico();            // Incrementa el conteo de IDs de médicos
         System.out.println("Médico registrado exitosamente. :)");
         pausa();
     }
@@ -250,7 +279,6 @@ public class Main {
         Medico medico = admin.buscarMedicoPorID(id);
         
         if (medico != null) {
-            System.out.println("\n✓ Médico encontrado:");
             System.out.println(medico.getInfo());
             System.out.println("Salario calculado: Q" + 
                 String.format("%.2f", medico.calcularSalario()));
@@ -302,15 +330,16 @@ public class Main {
     private static void menuGestionCitas() {
         boolean volver = false;
         while (!volver) {
-            System.out.println("\n*** GESTIÓN DE CITAS MÉDICAS ***");
-            System.out.println("(1) Crear nueva cita");
-            System.out.println("(2) Ver todas las citas");
-            System.out.println("(3) Buscar citas por paciente");
-            System.out.println("(4) Buscar citas por médico");
-            System.out.println("(5) Buscar citas por estado");
-            System.out.println("(6) Cambiar estado de cita");
-            System.out.println("(7) Cancelar cita");
-            System.out.println("(0) Volver al menú principal");            
+            System.out.println(
+                "\n*** GESTIÓN DE CITAS MÉDICAS ***\n" +
+                "(1) Crear nueva cita\n" +
+                "(2) Ver todas las citas\n" +
+                "(3) Buscar citas por paciente\n" +
+                "(4) Buscar citas por médico\n" +
+                "(5) Buscar citas por estado\n" +
+                "(6) Cambiar estado de cita\n" +
+                "(7) Cancelar cita\n" +
+                "(0) Volver al menú principal");    
             int opcion = leerEntero("Seleccione una opción: ");
             
             switch (opcion) {
@@ -405,7 +434,7 @@ public class Main {
         Cita nuevaCita = admin.crearCita(paciente, idMedico, fecha, horaC, tipo);
         
         if (nuevaCita != null) {
-            System.out.println("\n✓ Cita creada exitosamente.");
+            System.out.println("\nCita creada exitosamente. :)");
             System.out.println("ID de cita: #" + nuevaCita.getID());
         } else {
             System.out.println("\n✗ No se pudo crear la cita.");
@@ -468,13 +497,14 @@ public class Main {
     }
     
     private static void buscarCitasPorEstado() {
-        System.out.println("\nEstados disponibles:");
-        System.out.println("(1) PROGRAMADA");
-        System.out.println("(2) CONFIRMADA");
-        System.out.println("(3) EN_PROGRESO");
-        System.out.println("(4) COMPLETADA");
-        System.out.println("(5) CANCELADA");
-        System.out.println("(6) REAGENDADA");
+        System.out.println(
+            "\nEstados disponibles:\n" +
+            "(1) PROGRAMADA\n" +
+            "(2) CONFIRMADA\n" +
+            "(3) EN_PROGRESO\n" +
+            "(4) COMPLETADA\n" +
+            "(5) CANCELADA\n" +
+            "(6) REAGENDADA");
         int opcion = leerEntero("Seleccione estado: ");
         
         EstadoCita estado = null;
@@ -517,13 +547,14 @@ public class Main {
         System.out.println("\nCita encontrada:");
         System.out.println(cita.getInfo());
         
-        System.out.println("\nNuevo estado:");
-        System.out.println("(1) PROGRAMADA");
-        System.out.println("(2) CONFIRMADA");
-        System.out.println("(3) EN_PROGRESO");
-        System.out.println("(4) COMPLETADA");
-        System.out.println("(5) CANCELADA");
-        System.out.println("(6) REAGENDADA");
+        System.out.println(
+            "\nNuevo estado:\n" +
+            "(1) PROGRAMADA\n" +
+            "(2) CONFIRMADA\n" +
+            "(3) EN_PROGRESO\n" +
+            "(4) COMPLETADA\n" +
+            "(5) CANCELADA\n" +
+            "(6) REAGENDADA");
         int opcion = leerEntero("Seleccione: ");
         
         EstadoCita nuevoEstado = null;
@@ -556,7 +587,7 @@ public class Main {
             System.out.println("Cita a cancelar:");
             System.out.println(cita.getInfo());
             
-            String confirmacion = leerTexto("\n¿Está seguro? (si/no): ");
+            String confirmacion = leerTexto("\n¿Está seguro? (Sí/No): ");
             
             if (confirmacion.equalsIgnoreCase("si")) {
                 if (admin.cancelarCita(idCita)) {
@@ -570,4 +601,433 @@ public class Main {
         }
         pausa();
     }
+
+    // ****************** REAGENDAMIENTO ******************
+
+    private static void menuReagendamiento() {
+        boolean volver = false;
+        while (!volver) {
+            System.out.println(
+                "\n*** SISTEMA DE REAGENDAMIENTO ***\n" +
+                "(1) Reagendar una cita\n" +
+                "(2) Ver historial de una cita específica\n" +
+                "(3) Ver el historial de reagendamientos\n" +
+                "(0) Volver al menú principal");
+            
+            int opcion = leerEntero("Seleccione una opción: ");
+            
+            switch (opcion) {
+                case 1:
+                    reagendarCita();
+                    break;
+                case 2:
+                    verHistorialCitaEspecifica();
+                    break;
+                case 3:
+                    verTodoHistorial();
+                    break;
+                case 0:
+                    volver = true;
+                    break;
+                default:
+                    System.out.println("Opción inválida.");
+            }
+        }
+    }
+    
+    private static void reagendarCita() {
+        System.out.println("\n*** REAGENDAR CITA ***");
+        
+        int idCita = leerEntero("ID de la cita a reagendar: ");
+        Cita cita = admin.buscarCitaPorID(idCita);
+        
+        if (cita == null) {
+            System.out.println("Cita no encontrada.");
+            pausa();
+            return;
+        }
+        
+        System.out.println("\nCita actual:");
+        System.out.println(cita.getInfo());
+        
+        // Nueva fecha
+        System.out.println("\nIngresar la fecha de la nueva cita...");
+        int anio = leerEntero("Año (ej: 2025): ");
+        int mes = leerEntero("Mes (1-12): ");
+        int dia = leerEntero("Día (1-31): ");
+        LocalDate nuevaFecha = LocalDate.of(anio, mes, dia);
+        
+        // Nueva hora
+        System.out.println("\nIngresar la hora de la nueva cita...");
+        int hora = leerEntero("Hora (0-23): ");
+        int minuto = leerEntero("Minuto (0-59): ");
+        LocalTime nuevaHora = LocalTime.of(hora, minuto);
+        
+        // ¿Cambiar médico?
+        String cambiarMedico = leerTexto("\n¿Desea cambiar de médico? (Sí/No): ");
+        Integer nuevoIdMedico = null;
+        
+        if (cambiarMedico.equalsIgnoreCase("si")) {
+            System.out.println("\nMédicos disponibles:");
+            ArrayList<Medico> medicos = admin.getMedicos();
+            for (Medico medico : medicos) {
+                System.out.println("ID: " + medico.getID() + " - " + medico.getNombre() + 
+                                 " (" + medico.getDept() + ")");
+            }
+            nuevoIdMedico = leerEntero("\nID del nuevo médico: ");
+        }
+        
+        // Ingresar el motivo del reagendamiento
+        String motivo = leerTexto("Motivo del reagendamiento: ");
+        
+        // Intentar reagendar
+        boolean exito = admin.reagendarCita(idCita, nuevaFecha, nuevaHora, nuevoIdMedico, motivo);
+        
+        if (exito) {
+            System.out.println("\nCita reagendada exitosamente. :)");
+        } else {
+            System.out.println("\nNo se pudo reagendar la cita.");
+            System.out.println("Posiblemente por conflicto de horario o médico no encontrado.");
+        }
+        pausa();
+    }
+    
+    private static void verHistorialCitaEspecifica() {
+        int idCita = leerEntero("\nID de la cita: ");
+        ArrayList<Historial> historial = admin.getHistorialCita(idCita);
+        
+        if (historial.isEmpty()) {
+            System.out.println("No hay cambios registrados para esta cita.");
+        } else {
+            System.out.println("\n*** HISTORIAL DE CITA #" + idCita + " ***");
+            for (Historial h : historial) {
+                System.out.println("\n" + h.getInfo());
+            }
+        }
+        pausa();
+    }
+    
+    private static void verTodoHistorial() {
+        ArrayList<Historial> historial = admin.getTodoHistorial();
+        
+        if (historial.isEmpty()) {
+            System.out.println("\nNo hay reagendamientos registrados.");
+        } else {
+            System.out.println("\n*** HISTORIAL COMPLETO DE REAGENDAMIENTOS ***");
+            for (Historial h : historial) {
+                System.out.println("\n" + h.getInfo());
+            }
+        }
+        pausa();
+    }
+
+    // ****************** REPORTES FINANCIEROS ******************
+    
+    private static void menuReportesFinancieros() {
+        boolean volver = false;
+        while (!volver) {
+            System.out.println(
+                "\n*** REPORTES FINANCIEROS ***\n" +
+                "(1) Calcular salario de un médico específico\n" +
+                "(2) Reporte de nómina por departamento\n" +
+                "(3) Nómina total del hospital\n" +
+                "(4) Desgloce de médicos mejor pagados\n" +
+                "(0) Volver al menú principal");
+            
+            int opcion = leerEntero("Seleccione una opción: ");
+            
+            switch (opcion) {
+                case 1:
+                    calcularSalarioMedico();
+                    break;
+                case 2:
+                    reporteNominaDepartamento();
+                    break;
+                case 3:
+                    nominaTotalHospital();
+                    break;
+                case 4:
+                    topMedicosMejorPagados();
+                    break;
+                case 0:
+                    volver = true;
+                    break;
+                default:
+                    System.out.println("Opción inválida.");
+            }
+        }
+    }
+    
+    private static void calcularSalarioMedico() {
+        int id = leerEntero("\nID del médico: ");
+        Medico medico = admin.buscarMedicoPorID(id);
+        
+        if (medico == null) {
+            System.out.println("Médico no encontrado.");
+        } else {
+            System.out.println("\n*** INFORMACIÓN SALARIAL ***");
+            System.out.println("Médico: " + medico.getNombre());
+            System.out.println("Departamento: " + medico.getDept());
+            System.out.println("Salario base: Q" + String.format("%.2f", medico.getSalario()));
+            System.out.println("\n>>> SALARIO TOTAL: Q" + 
+                String.format("%.2f", medico.calcularSalario()) + " <<<");
+        }
+        pausa();
+    }
+    
+    private static void reporteNominaDepartamento() {
+        String depto = leerTexto("\nNombre del departamento: ");
+        ArrayList<Medico> medicos = admin.buscarPorDepartamento(depto);
+        
+        if (medicos.isEmpty()) {
+            System.out.println("No hay médicos en ese departamento.");
+        } else {
+            System.out.println("\n*** NÓMINA DEL DEPARTAMENTO: " + depto + " ***");
+            double totalDepto = 0;
+            
+            for (Medico medico : medicos) {
+                double salario = medico.calcularSalario();
+                System.out.println(medico.getNombre() + ": Q" + 
+                    String.format("%.2f", salario));
+                totalDepto += salario;
+            }
+            
+            System.out.println("───────────────────────────────");
+            System.out.println("TOTAL DEPARTAMENTO: Q" + 
+                String.format("%.2f", totalDepto));
+        }
+        pausa();
+    }
+    
+    private static void nominaTotalHospital() {
+        double total = admin.calcularNominaTotal();
+        ArrayList<Medico> medicos = admin.getMedicos();
+        
+        System.out.println("\n*** NÓMINA TOTAL DEL HOSPITAL ***");
+        System.out.println("Total de médicos: " + medicos.size());
+        
+        if (!medicos.isEmpty()) {
+            System.out.println("\nDesglose por médico:");
+            for (Medico medico : medicos) {
+                System.out.println(medico.getNombre() + " (" + medico.getDept() + "): Q" +
+                    String.format("%.2f", medico.calcularSalario()));
+            }
+        }
+        
+        System.out.println("\n═══════════════════════════════════");
+        System.out.println(">>> NÓMINA TOTAL: Q" + String.format("%.2f", total) + " <<<");
+        System.out.println("═══════════════════════════════════");
+        pausa();
+    }
+    
+    private static void topMedicosMejorPagados() {
+        int cantidad = leerEntero("\n¿Cuántos médicos desea ver? ");
+        ArrayList<Medico> medicosOrdenados = admin.getMedicosPorSalario();
+        
+        if (medicosOrdenados.isEmpty()) {
+            System.out.println("No hay médicos registrados.");
+        } else {
+            System.out.println("\n*** " + cantidad + " MÉDICOS MEJOR PAGADOS ***");
+            int limite = Math.min(cantidad, medicosOrdenados.size());
+            
+            for (int i = 0; i < limite; i++) {
+                Medico medico = medicosOrdenados.get(i);
+                System.out.println((i + 1) + ". " + medico.getNombre() + 
+                    " (" + medico.getDept() + ")");
+                System.out.println("   Salario: Q" + 
+                    String.format("%.2f", medico.calcularSalario()));
+            }
+        }
+        pausa();
+    }
+
+    // ****************** REPORTES Y ANÁLISIS ******************
+    
+    private static void menuReportesAnalisis() {
+        boolean volver = false;
+        while (!volver) {
+            System.out.println("\n*** REPORTES Y ANÁLISIS ***");
+            System.out.println("(1) Reporte completo de personal");
+            System.out.println("(2) Estadísticas por departamento");
+            System.out.println("(3) Reporte de citas por estado");
+            System.out.println("(4) Análisis de eficiencia del sistema");
+            System.out.println("(0) Volver al menú principal");
+            
+            int opcion = leerEntero("Seleccione una opción: ");
+            
+            switch (opcion) {
+                case 1:
+                    reporteCompletoPersonal();
+                    break;
+                case 2:
+                    estadisticasPorDepartamento();
+                    break;
+                case 3:
+                    reporteCitasPorEstado();
+                    break;
+                case 4:
+                    analisisEficiencia();
+                    break;
+                case 0:
+                    volver = true;
+                    break;
+                default:
+                    System.out.println("Opción inválida.");
+            }
+        }
+    }
+    
+    private static void reporteCompletoPersonal() {
+        ArrayList<Medico> medicos = admin.getMedicos();
+        
+        if (medicos.isEmpty()) {
+            System.out.println("\nNo hay médicos registrados.");
+        } else {
+            System.out.println("\n╔════════════════════════════════════════════════╗");
+            System.out.println("║        REPORTE COMPLETO DE PERSONAL            ║");
+            System.out.println("╚════════════════════════════════════════════════╝");
+            System.out.println("Total de médicos: " + medicos.size());
+            System.out.println();
+            
+            for (Medico medico : medicos) {
+                System.out.println("───────────────────────────────────────");
+                System.out.println(medico.getInfo());
+                System.out.println("Salario calculado: Q" + 
+                    String.format("%.2f", medico.calcularSalario()));
+                
+                // Información específica según tipo
+                if (medico instanceof Doctor) {
+                    Doctor doc = (Doctor) medico;
+                    System.out.println("Especialización: " + doc.getEspecializacion());
+                    System.out.println("Consultas realizadas: " + doc.getNumConsultas());
+                } else if (medico instanceof Cirujano) {
+                    Cirujano cir = (Cirujano) medico;
+                    System.out.println("Tipos de operaciones: " + cir.getTiposOperaciones());
+                    System.out.println("Horas de cirugía realizadas: " + cir.getHorasCirugiaRealizadas());
+                } else if (medico instanceof Enfermero) {
+                    Enfermero enf = (Enfermero) medico;
+                    System.out.println("Turno: " + enf.getTipoTurno());
+                    System.out.println("Nivel: " + enf.getNivelCertificacion());
+                } else if (medico instanceof Radiologo) {
+                    Radiologo rad = (Radiologo) medico;
+                    System.out.println("Equipos certificados: " + rad.getCertificados());
+                    System.out.println("Estudios realizados: " + rad.getNumEstudiosRealizados());
+                }
+            }
+            System.out.println("───────────────────────────────────────");
+        }
+        pausa();
+    }
+    
+    private static void estadisticasPorDepartamento() {
+        String depto = leerTexto("\nNombre del departamento: ");
+        ArrayList<Medico> medicos = admin.buscarPorDepartamento(depto);
+        
+        if (medicos.isEmpty()) {
+            System.out.println("No hay médicos en ese departamento.");
+        } else {
+            System.out.println("\n*** ESTADÍSTICAS: " + depto + " ***");
+            System.out.println("Total de médicos: " + medicos.size());
+            
+            double totalSalarios = 0;
+            int totalExperiencia = 0;
+            
+            for (Medico medico : medicos) {
+                totalSalarios += medico.calcularSalario();
+                totalExperiencia += medico.getAniosExp();
+            }
+            
+            double promedioSalario = totalSalarios / medicos.size();
+            double promedioExperiencia = (double) totalExperiencia / medicos.size();
+            
+            System.out.println("Nómina total del departamento: Q" + 
+                String.format("%.2f", totalSalarios));
+            System.out.println("Salario promedio: Q" + 
+                String.format("%.2f", promedioSalario));
+            System.out.println("Experiencia promedio: " + 
+                String.format("%.1f", promedioExperiencia) + " años");
+        }
+        pausa();
+    }
+    
+    private static void reporteCitasPorEstado() {
+        System.out.println("\n*** REPORTE DE CITAS POR ESTADO ***");
+        
+        int programadas = admin.contarCitasPorEstado(EstadoCita.PROGRAMADA);
+        int confirmadas = admin.contarCitasPorEstado(EstadoCita.CONFIRMADA);
+        int enProgreso = admin.contarCitasPorEstado(EstadoCita.EN_PROGRESO);
+        int completadas = admin.contarCitasPorEstado(EstadoCita.COMPLETADA);
+        int canceladas = admin.contarCitasPorEstado(EstadoCita.CANCELADA);
+        int reagendadas = admin.contarCitasPorEstado(EstadoCita.REAGENDADA);
+        
+        int total = admin.getCitas().size();
+        
+        System.out.println("\nTotal de citas: " + total);
+        System.out.println("───────────────────────────────");
+        System.out.println("PROGRAMADA:   " + programadas);
+        System.out.println("CONFIRMADA:   " + confirmadas);
+        System.out.println("EN_PROGRESO:  " + enProgreso);
+        System.out.println("COMPLETADA:   " + completadas);
+        System.out.println("CANCELADA:    " + canceladas);
+        System.out.println("REAGENDADA:   " + reagendadas);
+        pausa();
+    }
+    
+    private static void analisisEficiencia() {
+        ArrayList<Cita> citas = admin.getCitas();
+        
+        if (citas.isEmpty()) {
+            System.out.println("\nNo hay citas para analizar.");
+            pausa();
+            return;
+        }
+        
+        System.out.println("\n╔════════════════════════════════════════════════╗");
+        System.out.println("║      ANÁLISIS DE EFICIENCIA DEL SISTEMA        ║");
+        System.out.println("╚════════════════════════════════════════════════╝");
+        
+        int total = citas.size();
+        int programadas = admin.contarCitasPorEstado(EstadoCita.PROGRAMADA);
+        int confirmadas = admin.contarCitasPorEstado(EstadoCita.CONFIRMADA);
+        int enProgreso = admin.contarCitasPorEstado(EstadoCita.EN_PROGRESO);
+        int completadas = admin.contarCitasPorEstado(EstadoCita.COMPLETADA);
+        int canceladas = admin.contarCitasPorEstado(EstadoCita.CANCELADA);
+        int reagendadas = admin.contarCitasPorEstado(EstadoCita.REAGENDADA);
+        
+        double porcCompletadas = admin.calcularPorcentajeCompletadas();
+        double porcCanceladas = admin.calcularPorcentajeCanceladas();
+        
+        System.out.println("\nTOTAL DE CITAS: " + total);
+        System.out.println("\nDistribución por estado:");
+        System.out.println("  Programadas:  " + programadas + " (" + 
+            String.format("%.1f", (programadas * 100.0 / total)) + "%)");
+        System.out.println("  Confirmadas:  " + confirmadas + " (" + 
+            String.format("%.1f", (confirmadas * 100.0 / total)) + "%)");
+        System.out.println("  En progreso:  " + enProgreso + " (" + 
+            String.format("%.1f", (enProgreso * 100.0 / total)) + "%)");
+        System.out.println("  Completadas:  " + completadas + " (" + 
+            String.format("%.1f", porcCompletadas) + "%)");
+        System.out.println("  Canceladas:   " + canceladas + " (" + 
+            String.format("%.1f", porcCanceladas) + "%)");
+        System.out.println("  Reagendadas:  " + reagendadas + " (" + 
+            String.format("%.1f", (reagendadas * 100.0 / total)) + "%)");
+        
+        System.out.println("\n══════════════════════════════════════════════");
+        System.out.println("INDICADORES CLAVE:");
+        System.out.println("  ✓ Tasa de completación: " + String.format("%.2f", porcCompletadas) + "%");
+        System.out.println("  ✗ Tasa de cancelación: " + String.format("%.2f", porcCanceladas) + "%");
+        
+        if (porcCompletadas >= 70) {
+            System.out.println("\n>>> Sistema funcionando EFICIENTEMENTE <<<");
+        } else if (porcCompletadas >= 50) {
+            System.out.println("\n>>> Sistema funcionando ACEPTABLEMENTE <<<");
+        } else {
+            System.out.println("\n>>> Sistema necesita MEJORAS <<<");
+        }
+        System.out.println("══════════════════════════════════════════════");
+        
+        pausa();
+    }
 }
+
+// FIN DE PROGRAMA

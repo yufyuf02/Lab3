@@ -39,10 +39,10 @@ public abstract class Medico {
     // Conseguir la información básica del médico
     public String getInfo() {
         return
-            "ID: " + ID + 
-            "Nombre: " + nombre + 
-            "Departamento: " + departamento + 
-            "Experiencia: " + aniosExp + " años" +
+            "ID: " + ID + " | " +
+            "Nombre: " + nombre + " | " +
+            "Departamento: " + departamento + " | " +
+            "Experiencia: " + aniosExp + " años" + " | " +
             "Salario: Q" + String.format("%.2f", salario); // Dos decimales
     }
 }

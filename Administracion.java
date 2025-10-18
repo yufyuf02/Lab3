@@ -10,6 +10,7 @@ public class Administracion {
     private ArrayList<Cita> citas;
     private ArrayList<Historial> historialCambios;
     private int siguienteIDCita;
+    private int siguienteIDMedico;
     
     // Constructor
     public Administracion() {
@@ -17,6 +18,7 @@ public class Administracion {
         citas = new ArrayList<>();
         historialCambios = new ArrayList<>();
         siguienteIDCita = 1;
+        siguienteIDMedico = 5; // Empezamos con 5 porque quemamos cinco médicos al iniciar
     }
     
     // ****************** GESTIÓN DE MÉDICOS ******************
@@ -61,6 +63,14 @@ public class Administracion {
         }
         return false;
     }
+
+    public int getSiguienteIDMedico() {
+        return siguienteIDMedico;
+    }
+    
+    public void incrementarIDMedico() {
+        siguienteIDMedico++;
+    }
     
     // ****************** GESTIÓN DE CITAS ******************
     
@@ -77,7 +87,8 @@ public class Administracion {
             return null;
         }
         
-        Cita nuevaCita = new Cita(siguienteIDCita++, paciente, medico, fecha, hora, tipo);
+        Cita nuevaCita = new Cita(siguienteIDCita, paciente, medico, fecha, hora, tipo);
+        siguienteIDCita++; 
         citas.add(nuevaCita);
         return nuevaCita;
     }
